@@ -1,0 +1,20 @@
+EmployeeID,Name,Department,Age,Gender,Experience,Salary,City,JoiningYear,PerformanceRating
+101,Divya Kapoor,Finance,54,Female,32,109615,Delhi,1994,3
+102,Tom Khan,HR,28,Male,2,32368,Hyderabad,2024,3
+103,Priya Verma,HR,23,Female,0,31294,Hyderabad,2026,2
+104,Rohan Reddy,Marketing,46,Male,4,27796,Pune,2022,3
+105,John Sharma,Operations,35,Female,6,40559,Pune,2020,3
+106,Sara Kapoor,Finance,39,Male,10,50251,Jaipur,2016,1
+107,Sara Verma,R&D,25,Female,1,29164,Mumbai,2025,5
+108,Riya Sharma,Finance,36,Male,6,49111,Hyderabad,2020,1
+109,Neha Verma,Marketing,46,Male,16,68381,Pune,2010,3
+110,Smith Nair,Finance,35,Female,4,46682,Bengaluru,2022,2
+111,John Rao,Sales,53,Female,30,102809,Hyderabad,1996,5
+112,Tom Kapoor,IT,52,Male,6,32781,Pune,2020,4
+113,Neha Patel,Support,48,Male,25,95039,Hyderabad,2001,1
+114,Tom Iyer,Support,56,Female,30,110355,Chennai,1996,1
+115,Kavya Singh,Operations,49,Male,26,95275,Jaipur,2000,2
+116,Divya Khan,Sales,28,Male,5,51063,Bengaluru,2021,5
+117,Rohan Gupta,Operations,54,Other,17,69074,Mumbai,2009,5
+118,Priya Reddy,Marketing,46,Male,15,72833,Hyderabad,2011,3
+119,Rohan Reddy,Support,25,Male,0,25000,Kolkata,2026,3
