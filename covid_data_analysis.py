@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-# this covid dataset has one row per country per date, so its basically a time series file
 df = pd.read_csv("covid-data.csv")
 
 print("TASK -> LOAD THE DATASET")
@@ -46,13 +45,10 @@ print("Answer: " + str(avg_cases))
 print("Q2. Which feature has the highest standard deviation?")
 print("Standard deviation for each column:")
 print(df.std(numeric_only=True))
-
-# location column tells us the country name, nunique gives count of distinct countries
 print("Q3. How many unique countries/locations are in the dataset?")
 unique_countries = df["location"].nunique()
 print("Answer: " + str(unique_countries) + " countries")
 
-# idxmax gives the row index where total_cases is the biggest, then we just look up that row
 print("Q4. Which country recorded the single highest total cases value, and what was it?")
 max_cases_row = df.loc[df["total_cases"].idxmax()]
 print("Answer: " + str(max_cases_row["location"]) + " with " + str(max_cases_row["total_cases"]) + " total cases")
