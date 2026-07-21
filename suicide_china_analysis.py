@@ -7,8 +7,6 @@ print("TASK -> LOAD THE DATASET")
 
 print("FIRST 5 ROWS -> ")
 print(df.head()) 
-
-
 print("LAST 5 ROWS -> ")
 print(df.tail())
 
