@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-# this dataset has demographic and administrative details, one row per recorded case
 df = pd.read_csv("SuicideChina.csv")
 
 print("TASK -> LOAD THE DATASET")
@@ -47,7 +46,6 @@ print("Q2. Which feature has the highest standard deviation?")
 print("Standard deviation for each column:")
 print(df.std(numeric_only=True))
 
-# value_counts is a nice beginner way to see how many records fall into each category
 print("Q3. How many records are there for each gender?")
 gender_counts = df["Sex"].value_counts()
 print(gender_counts)
