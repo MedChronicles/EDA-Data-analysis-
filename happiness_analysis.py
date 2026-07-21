@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 
-# this data comes from a social survey, so a lot of the columns are just peoples answers about their lives
 df = pd.read_csv("happiness.csv")
 
 print("TASK -> LOAD THE DATASET")
@@ -47,12 +46,10 @@ print("Q2. Which feature has the highest standard deviation?")
 print("Standard deviation for each column:")
 print(df.std(numeric_only=True))
 
-# happy is a category like very happy / pretty happy / not too happy, so value_counts makes more sense than mean
 print("Q3. How many people fall into each happiness category?")
 happy_counts = df["happy"].value_counts()
 print(happy_counts)
 
-# the survey was repeated across several years, nunique tells us how many different years are covered
 print("Q4. How many different survey years does this dataset cover?")
 unique_years = df["year"].nunique()
 print("Answer: " + str(unique_years) + " years")
