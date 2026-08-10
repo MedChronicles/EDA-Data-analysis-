@@ -1,20 +1,55 @@
-EDA-Data-analysis-# Exploratory Data Analysis (EDA) - Lab Submissions
+# Exploratory Data Analysis (EDA)
 
-Exploratory Data Analysis (EDA) is an approach to analyzing sets of data in order to summarize their main features using visual graphs and statistical models. Through EDA, one can identify patterns and abnormalities, formulate hypotheses, and test them for validity in the given data.
+This repository contains my **Exploratory Data Analysis (EDA) lab assignments and practical work** completed using Python.
 
-Project Overview
-The repository consists of Python scripts and data sets related to the course studies of Exploratory Data Analysis.
+The assignments cover different data preprocessing and analysis techniques such as:
 
-Files and Datasets
-The following files were created and are used for the practical assignments of the course:
+* Handling Missing Data
+* Imputation Techniques
+* Discretization and Binning
+* Feature Scaling and Normalization
+* Outlier Detection
+* Data Analysis and Visualization
+* Basic Exploratory Data Analysis on different datasets
 
-covid_data_analysis.py covid-data.csv – analysis of the peculiarities of COVID-19 development;
-happiness_analysis.py happiness.csv – analysis of factors affecting the level of happiness;
-suicide_china_analysis.py SuicideChina.csv – analysis of statistical trends in China;
-employee_dataset.csv – analysis of work and human resource data sets.
+## Technologies Used
 
-Technologies
-Python 3, Pandas, NumPy.
+* Python
+* Pandas
+* NumPy
+* Matplotlib
 
-The following command will allow you to install the necessary packages for the scripts to work:
-pip install pandas numpy
+## Datasets Used
+
+The repository includes datasets related to:
+
+* COVID-19
+* Happiness
+* Suicide statistics in China
+* Employee data
+
+## How to Run
+
+Install the required libraries:
+
+```bash
+pip install pandas numpy matplotlib
+```
+
+Then run any Python assignment file:
+
+```bash
+python filename.py
+```
+
+## Purpose
+
+These programs were created as part of **EDA lab/practical assignments** to understand data cleaning, preprocessing, analysis, and visualization using Python.
+
+## Last Updated
+
+**11 August 2026**
+
+## Author
+
+**Arpit Saharan**
