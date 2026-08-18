@@ -167,14 +167,6 @@ def correlation_heatmap(df: pd.DataFrame, filename: str = "correlation_heatmap.p
     plt.close(fig)
     return correlation
 
-
-def pearson_test(df: pd.DataFrame, col_a: str, col_b: str) -> None:
-    corr, p_value = stats.pearsonr(df[col_a], df[col_b])
-    print(f"\nPearson correlation between '{col_a}' and '{col_b}':")
-    print(f"  correlation coefficient: {corr:.6f}")
-    print(f"  p-value:                 {p_value:.6e}")
-
-
 def multivariate_analysis(df: pd.DataFrame) -> None:
     print("\n" + "=" * 60)
     print("MULTIVARIATE ANALYSIS")
@@ -190,7 +182,6 @@ def multivariate_analysis(df: pd.DataFrame) -> None:
     print("\nFeatures most correlated with wine quality:")
     print(top_correlated_with_quality)
 
-
 def main() -> None:
     ensure_plots_dir()
     df = load_dataset()
@@ -198,7 +189,7 @@ def main() -> None:
     univariate_analysis(df)
     bivariate_analysis(df)
     multivariate_analysis(df)
-    print("\nAll plots saved to the 'plots' directory.")
+    print("\n All plots saved to the 'plots' directory.")
 
 
 if __name__ == "__main__":
