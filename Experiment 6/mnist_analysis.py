@@ -1,32 +1,3 @@
-"""
-MNIST Dimensionality Reduction & Digit Recognition Analysis
-=============================================================
-Covers:
-  Part A - Data understanding & preprocessing
-  Part B - PCA (variance analysis, 2D/50D projection, scree/cumulative plots)
-  Part C - t-SNE (raw vs PCA-reduced input, perplexity comparison)
-  Part D - Digit recognition with KNN/SVM on raw vs PCA features
-
-DATA SOURCE
------------
-The script FIRST tries to pull the full, canonical 70,000-sample,
-28x28 (784-feature) MNIST set from OpenML (the same dataset mirrored on
-Kaggle/UCI):
-    fetch_openml('mnist_784', version=1)
-
-If there is no internet access (as in this sandboxed run) it automatically
-falls back to the UCI "Optical Recognition of Handwritten Digits" set that
-ships inside scikit-learn (`sklearn.datasets.load_digits`): 1,797 samples,
-8x8 (64-feature) images, 10 classes. It is the same *kind* of dataset
-(grayscale handwritten digits 0-9) and every step below (PCA, t-SNE, KNN/SVM)
-runs identically regardless of which source is used -- only N_SAMPLES and
-N_FEATURES change.
-
-To force the full-size dataset when you DO have internet access, just run
-this script as-is on a machine that can reach openml.org (or swap in a
-Kaggle `train.csv` -- see `load_from_kaggle_csv()` below).
-"""
-
 import time
 import warnings
 import numpy as np
@@ -50,14 +21,9 @@ sns.set_style("whitegrid")
 RNG = 42
 np.random.seed(RNG)
 
-OUT = "outputs"  # where figures get saved
+OUT = "outputs"  
 import os
 os.makedirs(OUT, exist_ok=True)
-
-
-# ---------------------------------------------------------------------------
-# PART A: DATA LOADING & PREPROCESSING
-# ---------------------------------------------------------------------------
 
 def load_from_kaggle_csv(path="train.csv"):
     """Optional loader for the Kaggle 'Digit Recognizer' CSV
@@ -103,7 +69,7 @@ print(f"Number of classes     : {n_classes}  -> {sorted(np.unique(y).tolist())}"
 print(f"Image dimensions      : {IMG_SHAPE[0]} x {IMG_SHAPE[1]} = {n_features} pixels (features)")
 print(f"Raw pixel value range : [{X_raw.min():.1f}, {pixel_max:.1f}]")
 
-# --- Visualize >= 10 sample images -----------------------------------------
+
 fig, axes = plt.subplots(2, 5, figsize=(10, 4.5))
 rng = np.random.RandomState(RNG)
 sample_idx = rng.choice(n_samples, 10, replace=False)
@@ -117,20 +83,14 @@ plt.savefig(f"{OUT}/01_sample_digits.png", dpi=150)
 plt.close()
 print(f"\nSaved: {OUT}/01_sample_digits.png")
 
-# --- Normalize pixel values to [0, 1] ---------------------------------------
 X_norm = X_raw / pixel_max
 print(f"Normalized pixel range: [{X_norm.min():.2f}, {X_norm.max():.2f}]")
 
-
-# ---------------------------------------------------------------------------
-# PART B: PRINCIPAL COMPONENT ANALYSIS (PCA)
-# ---------------------------------------------------------------------------
 
 print("\n" + "=" * 70)
 print("PART B: PRINCIPAL COMPONENT ANALYSIS (PCA)")
 print("=" * 70)
 
-# Fit PCA with the maximum number of usable components
 max_components = min(n_samples, n_features)
 pca_full = PCA(n_components=max_components, random_state=RNG)
 pca_full.fit(X_norm)
@@ -150,7 +110,6 @@ print(f"Components needed to retain 95% variance: {n95}")
 print(f"Components needed to retain 99% variance: {n99}")
 print(f"(Original feature space: {n_features} dimensions)")
 
-# --- Scree plot --------------------------------------------------------------
 n_show = min(50, max_components)
 plt.figure(figsize=(8, 5))
 plt.plot(range(1, n_show + 1), explained[:n_show], "o-", linewidth=1.5, markersize=4)
@@ -162,7 +121,6 @@ plt.savefig(f"{OUT}/02_scree_plot.png", dpi=150)
 plt.close()
 print(f"Saved: {OUT}/02_scree_plot.png")
 
-# --- Cumulative explained variance plot --------------------------------------
 plt.figure(figsize=(8, 5))
 plt.plot(range(1, max_components + 1), cumulative, linewidth=2)
 for thresh, n_c, color in [(0.90, n90, "green"), (0.95, n95, "orange"), (0.99, n99, "red")]:
@@ -178,7 +136,6 @@ plt.savefig(f"{OUT}/03_cumulative_variance.png", dpi=150)
 plt.close()
 print(f"Saved: {OUT}/03_cumulative_variance.png")
 
-# --- Reduce to 2 and 50 dimensions -------------------------------------------
 pca_2 = PCA(n_components=2, random_state=RNG)
 X_pca_2d = pca_2.fit_transform(X_norm)
 
@@ -189,7 +146,6 @@ X_pca_50d = pca_50.fit_transform(X_norm)
 print(f"\n2D PCA projection variance captured : {pca_2.explained_variance_ratio_.sum()*100:.2f}%")
 print(f"{n_50}D PCA projection variance captured: {pca_50.explained_variance_ratio_.sum()*100:.2f}%")
 
-# --- 2D PCA scatter plot ------------------------------------------------------
 plt.figure(figsize=(8, 7))
 scatter = plt.scatter(X_pca_2d[:, 0], X_pca_2d[:, 1], c=y, cmap="tab10", s=8, alpha=0.6)
 plt.colorbar(scatter, label="Digit", ticks=range(10))
@@ -201,16 +157,10 @@ plt.savefig(f"{OUT}/04_pca_2d_projection.png", dpi=150)
 plt.close()
 print(f"Saved: {OUT}/04_pca_2d_projection.png")
 
-
-# ---------------------------------------------------------------------------
-# PART C: t-SNE VISUALIZATION
-# ---------------------------------------------------------------------------
-
 print("\n" + "=" * 70)
 print("PART C: t-SNE VISUALIZATION")
 print("=" * 70)
 
-# t-SNE is O(n^2)-ish; subsample for tractability on large datasets.
 TSNE_N = min(3000, n_samples)
 sub_idx = rng.choice(n_samples, TSNE_N, replace=False)
 X_sub_raw = X_norm[sub_idx]
@@ -228,7 +178,6 @@ def run_tsne(X, perplexity, label):
     print(f"  t-SNE [{label}, perplexity={perplexity}] done in {dt:.1f}s")
     return emb, dt
 
-# --- 9/10: t-SNE on raw data vs PCA(50)-reduced data, perplexity=30 ----------
 emb_raw, t_raw = run_tsne(X_sub_raw, 30, "raw pixels")
 emb_pca, t_pca = run_tsne(X_sub_pca50, 30, "PCA-50")
 
@@ -246,7 +195,6 @@ plt.savefig(f"{OUT}/05_tsne_raw_vs_pca.png", dpi=150, bbox_inches="tight")
 plt.close()
 print(f"Saved: {OUT}/05_tsne_raw_vs_pca.png")
 
-# --- 11/12: perplexity sweep (on PCA-50 input, for speed) --------------------
 perplexities = [5, 15, 30, 50, 100]
 perplexities = [p for p in perplexities if p < TSNE_N]  # perplexity must be < n_samples
 fig, axes = plt.subplots(1, len(perplexities), figsize=(4.5 * len(perplexities), 4.5))
@@ -265,17 +213,10 @@ plt.savefig(f"{OUT}/06_tsne_perplexity_comparison.png", dpi=150, bbox_inches="ti
 plt.close()
 print(f"Saved: {OUT}/06_tsne_perplexity_comparison.png")
 
-
-# ---------------------------------------------------------------------------
-# PART D: DIGIT RECOGNITION ANALYSIS
-# ---------------------------------------------------------------------------
-
 print("\n" + "=" * 70)
 print("PART D: DIGIT RECOGNITION ANALYSIS (KNN & SVM)")
 print("=" * 70)
 
-# Use a manageable train/test split (subsample if the raw dataset is huge,
-# so that raw-784D KNN/SVM finish in reasonable time).
 CLF_N = min(8000, n_samples)
 clf_idx = rng.choice(n_samples, CLF_N, replace=False)
 X_clf_raw = X_norm[clf_idx]
@@ -326,7 +267,6 @@ print("SUMMARY TABLE")
 print("-" * 70)
 print(results_df.to_string(index=False))
 
-# --- Comparison bar charts ----------------------------------------------------
 fig, axes = plt.subplots(1, 3, figsize=(16, 5))
 metrics = [("Accuracy", "Accuracy", "{:.1%}"),
            ("Train_Time_s", "Training Time (s)", "{:.2f}s"),
@@ -345,7 +285,6 @@ plt.savefig(f"{OUT}/07_classifier_comparison.png", dpi=150)
 plt.close()
 print(f"\nSaved: {OUT}/07_classifier_comparison.png")
 
-# --- Confusion matrix (best model) --------------------------------------------
 plt.figure(figsize=(6, 5))
 cm = confusion_matrix(yte, pred_svm_pca)
 sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
